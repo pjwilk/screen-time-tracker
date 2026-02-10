@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mason's Screen Time Rules</title>
+  <style>
+    @page {
+      margin: 0.6in;
+      size: letter;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+      color: #1a1a1a;
+      line-height: 1.4;
+      font-size: 11pt;
+      max-width: 7.5in;
+      margin: 0 auto;
+      padding: 0.5in;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      border-bottom: 3px solid #1a1a1a;
+      padding-bottom: 10px;
+      margin-bottom: 16px;
+    }
+    .header h1 {
+      font-size: 22pt;
+      letter-spacing: -0.5px;
+      margin-bottom: 2px;
+    }
+    .header .subtitle {
+      font-size: 11pt;
+      color: #555;
+    }
+    .header .url {
+      font-size: 10pt;
+      font-family: 'Consolas', 'Courier New', monospace;
+      background: #f0f0f0;
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 4px;
+      margin-top: 6px;
+    }
+
+    /* Big number callout */
+    .callout {
+      text-align: center;
+      background: #f8f9fa;
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 16px;
+    }
+    .callout .big-number {
+      font-size: 36pt;
+      font-weight: 800;
+      line-height: 1;
+    }
+    .callout .big-label {
+      font-size: 10pt;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .callout-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .callout-row .callout {
+      flex: 1;
+      margin-bottom: 0;
+    }
+    .callout.green { border-color: #28a745; background: #e8f5e9; }
+    .callout.green .big-number { color: #1b5e20; }
+    .callout.amber { border-color: #f9a825; background: #fff8e1; }
+    .callout.amber .big-number { color: #e65100; }
+
+    /* Two-column layout */
+    .columns {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .columns .col { flex: 1; }
+
+    /* Section */
+    .section {
+      margin-bottom: 14px;
+    }
+    .section h2 {
+      font-size: 13pt;
+      background: #1a1a1a;
+      color: white;
+      padding: 4px 10px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+    .section h3 {
+      font-size: 11pt;
+      margin-bottom: 4px;
+      color: #333;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 8px;
+      font-size: 10pt;
+    }
+    th {
+      background: #f0f0f0;
+      text-align: left;
+      padding: 4px 8px;
+      border: 1px solid #ccc;
+      font-size: 9pt;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    td {
+      padding: 4px 8px;
+      border: 1px solid #ddd;
+    }
+    tr:nth-child(even) { background: #fafafa; }
+    .negative { color: #c0392b; font-weight: 600; }
+    .positive { color: #1b7a3a; font-weight: 600; }
+
+    /* Math box */
+    .math-box {
+      background: #f8f9fa;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 10pt;
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+    .math-box .result {
+      border-top: 2px solid #1a1a1a;
+      font-weight: 700;
+      padding-top: 2px;
+      margin-top: 2px;
+    }
+
+    /* Action items */
+    .action-list {
+      list-style: none;
+      padding: 0;
+    }
+    .action-list li {
+      padding: 5px 8px;
+      margin-bottom: 4px;
+      border-radius: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .action-list li:nth-child(odd) { background: #f0f7f0; }
+    .action-list li:nth-child(even) { background: #f8f9fa; }
+    .action-list .reward {
+      font-weight: 700;
+      color: #1b7a3a;
+      white-space: nowrap;
+    }
+
+    /* Bottom line */
+    .bottom-line {
+      background: #1b5e20;
+      color: white;
+      padding: 12px 16px;
+      border-radius: 8px;
+      text-align: center;
+      margin-top: 12px;
+    }
+    .bottom-line strong {
+      font-size: 12pt;
+    }
+    .bottom-line p {
+      margin-top: 4px;
+      font-size: 10pt;
+      opacity: 0.9;
+    }
+
+    /* Print */
+    @media print {
+      body { padding: 0; }
+      .callout, .math-box { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .bottom-line { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .section h2 { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .action-list li { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>Mason's Screen Time Rules</h1>
+    <div class="subtitle">Check your screen time anytime at:</div>
+    <div class="url">pjwilk.github.io/screen-time-tracker</div>
+  </div>
+
+  <div class="callout-row">
+    <div class="callout green">
+      <div class="big-label">You Start With</div>
+      <div class="big-number">3 hrs</div>
+      <div class="big-label">180 min / day</div>
+    </div>
+    <div class="callout amber">
+      <div class="big-label">You're Currently At</div>
+      <div class="big-number">1h 35m</div>
+      <div class="big-label">95 min / day</div>
+    </div>
+  </div>
+
+  <div class="columns">
+    <div class="col">
+      <div class="section">
+        <h2>&#9660; You LOSE Time For</h2>
+        <table>
+          <tr><th>Problem</th><th>Penalty</th></tr>
+          <tr><td>Each missing assignment</td><td class="negative">-5 min</td></tr>
+          <tr><td>Each class with a D</td><td class="negative">-10 min</td></tr>
+          <tr><td>Each class with an F</td><td class="negative">-20 min</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="col">
+      <div class="section">
+        <h2>&#9650; You EARN Bonus Time For</h2>
+        <table>
+          <tr><th>Achievement</th><th>Bonus</th></tr>
+          <tr><td>Zero missing assignments</td><td class="positive">+30 min</td></tr>
+          <tr><td>Raising a class one letter grade</td><td class="positive">+10 min</td></tr>
+          <tr><td>Each class with an A</td><td class="positive">+5 min</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Your Classes Right Now</h2>
+    <table>
+      <tr><th>Class</th><th>Grade</th><th>Missing</th><th>Impact on Screen Time</th></tr>
+      <tr><td>Algebra 1 S2</td><td>C (70.6%)</td><td>3</td><td class="negative">-15 min</td></tr>
+      <tr><td>Art 2</td><td>B (84.25%)</td><td>1</td><td class="negative">-5 min</td></tr>
+      <tr><td>Biology 2</td><td>D (61.23%)</td><td>4</td><td class="negative">-30 min (20 missing + 10 D)</td></tr>
+      <tr><td>Concert Choir</td><td>A (100%)</td><td>0</td><td class="positive">+5 min (A bonus!)</td></tr>
+      <tr><td>English 2</td><td>B (84%)</td><td>2</td><td class="negative">-10 min</td></tr>
+      <tr><td>Mil Sci I</td><td>F (49.5%)</td><td>2</td><td class="negative">-30 min (10 missing + 20 F)</td></tr>
+    </table>
+  </div>
+
+  <div class="columns">
+    <div class="col">
+      <div class="section">
+        <h3>Your Math Right Now</h3>
+        <div class="math-box">
+          180 &nbsp;baseline<br>
+          <span class="negative">- 60</span> &nbsp;12 missing assignments &times; 5<br>
+          <span class="negative">- 10</span> &nbsp;Biology D<br>
+          <span class="negative">- 20</span> &nbsp;Mil Sci F<br>
+          <span class="positive">+&nbsp; 5</span> &nbsp;Concert Choir A<br>
+          <div class="result">= 95 min (1h 35m)</div>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="section">
+        <h3>The Dream Scenario: All A's, No Missing</h3>
+        <div class="math-box">
+          180 &nbsp;baseline<br>
+          <span class="positive">+ 30</span> &nbsp;zero missing bonus<br>
+          <span class="positive">+ 30</span> &nbsp;6 classes &times; 5 A bonus<br>
+          <div class="result">= 240 min (4 hours!)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>&#9889; Fastest Ways To Earn More Time</h2>
+    <ol class="action-list">
+      <li>
+        <span>Turn in <strong>all 12 missing assignments</strong></span>
+        <span class="reward">+90 min</span>
+      </li>
+      <li>
+        <span>Turn in just <strong>one</strong> missing assignment</span>
+        <span class="reward">+5 min</span>
+      </li>
+      <li>
+        <span>Raise <strong>Biology</strong> from D to C (get to 70%)</span>
+        <span class="reward">+20 min</span>
+      </li>
+      <li>
+        <span>Raise <strong>Mil Sci</strong> from F to D (get to 60%)</span>
+        <span class="reward">+20 min</span>
+      </li>
+      <li>
+        <span>Raise <strong>Mil Sci</strong> all the way from F to C</span>
+        <span class="reward">+40 min</span>
+      </li>
+      <li>
+        <span>Keep <strong>Concert Choir</strong> at an A</span>
+        <span class="reward">+5 min</span>
+      </li>
+    </ol>
+  </div>
+
+  <div class="bottom-line">
+    <strong>Every assignment you turn in = 5 more minutes of screen time. Every day.</strong>
+    <p>Clear all 12 missing assignments and you jump from 1h 35m to over 3 hours. You got this.</p>
+  </div>
+
+</body>
+</html>
