@@ -1,0 +1,336 @@
+/* === Mason's Screen Time Tracker — Custom Styles === */
+
+/* Header */
+.header-content {
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+.header-content h1 {
+  margin-bottom: 0;
+  font-size: 1.6rem;
+}
+
+/* Navigation */
+#app-nav ul {
+  display: flex;
+  justify-content: center;
+  gap: 0.25rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-wrap: wrap;
+}
+#app-nav a {
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.375rem;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: background-color 0.15s;
+}
+#app-nav a.active {
+  background: var(--pico-primary);
+  color: var(--pico-primary-inverse);
+}
+
+/* === Screen Time Hero === */
+.screen-time-hero {
+  text-align: center;
+  padding: 2rem 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 1.5rem;
+}
+.screen-time-hero .time-value {
+  font-size: 3.5rem;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 0.25rem;
+}
+.screen-time-hero .time-label {
+  font-size: 1rem;
+  opacity: 0.8;
+  margin-bottom: 0;
+}
+.screen-time-hero.level-great {
+  background: #d4edda;
+  color: #155724;
+}
+.screen-time-hero.level-good {
+  background: #d6f5d6;
+  color: #1a6b1a;
+}
+.screen-time-hero.level-ok {
+  background: #fff3cd;
+  color: #856404;
+}
+.screen-time-hero.level-low {
+  background: #f8d7da;
+  color: #721c24;
+}
+.screen-time-hero.locked {
+  background: #e2e3e5;
+  color: #383d41;
+}
+
+/* === Grade Colors === */
+.grade-a { color: #1a7a36; }
+.grade-b { color: #2b6cb0; }
+.grade-c { color: #b7791f; }
+.grade-d { color: #c05621; }
+.grade-f { color: #c0392b; }
+
+.grade-badge {
+  display: inline-block;
+  font-size: 2rem;
+  font-weight: 700;
+  padding: 0.2rem 0.6rem;
+  border-radius: 0.5rem;
+  line-height: 1;
+}
+.grade-badge.grade-a { background: #d4edda; color: #155724; }
+.grade-badge.grade-b { background: #bee3f8; color: #2a4365; }
+.grade-badge.grade-c { background: #fefcbf; color: #744210; }
+.grade-badge.grade-d { background: #feebc8; color: #7b341e; }
+.grade-badge.grade-f { background: #fed7d7; color: #742a2a; }
+
+/* === Grade Card Grid === */
+.grade-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.grade-card {
+  padding: 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--pico-muted-border-color);
+  background: var(--pico-card-background-color);
+  transition: box-shadow 0.15s;
+}
+.grade-card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+.grade-card .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+.grade-card .class-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+.grade-card .grade-pct {
+  font-size: 0.85rem;
+  opacity: 0.7;
+  margin-top: 0.25rem;
+}
+.grade-card .missing-info {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+}
+.missing-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.missing-badge.has-missing {
+  background: #fed7d7;
+  color: #742a2a;
+}
+.missing-badge.no-missing {
+  background: #d4edda;
+  color: #155724;
+}
+
+/* === Trend Arrows === */
+.trend-up { color: #1a7a36; font-weight: bold; }
+.trend-down { color: #c0392b; font-weight: bold; }
+.trend-flat { color: #6c757d; }
+
+/* === Breakdown Panel === */
+.breakdown-panel {
+  margin-bottom: 1.5rem;
+}
+.breakdown-panel h3 {
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+}
+.breakdown-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.breakdown-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid var(--pico-muted-border-color);
+  font-size: 0.9rem;
+}
+.breakdown-list li:last-child {
+  border-bottom: none;
+  font-weight: 700;
+}
+.breakdown-positive { color: #1a7a36; }
+.breakdown-negative { color: #c0392b; }
+.breakdown-neutral { color: var(--pico-color); }
+
+/* === Progress Bar === */
+.progress-bar-container {
+  background: var(--pico-muted-border-color);
+  border-radius: 0.5rem;
+  height: 0.5rem;
+  overflow: hidden;
+  margin-top: 0.25rem;
+}
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 0.5rem;
+  transition: width 0.3s ease;
+}
+.progress-bar-fill.fill-a { background: #1a7a36; }
+.progress-bar-fill.fill-b { background: #2b6cb0; }
+.progress-bar-fill.fill-c { background: #b7791f; }
+.progress-bar-fill.fill-d { background: #c05621; }
+.progress-bar-fill.fill-f { background: #c0392b; }
+
+/* === Modal === */
+dialog.app-modal {
+  border: none;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  max-width: 500px;
+  width: 90%;
+}
+dialog.app-modal::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+}
+dialog.app-modal h2 {
+  margin-top: 0;
+  font-size: 1.2rem;
+}
+.modal-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+/* === Section Headers === */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.section-header h2 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+/* === Update Button === */
+.btn-update {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  cursor: pointer;
+}
+
+/* === History Table === */
+.history-table {
+  width: 100%;
+  font-size: 0.9rem;
+}
+.history-table th {
+  font-weight: 600;
+  text-align: left;
+}
+
+/* === Admin Settings === */
+.settings-group {
+  margin-bottom: 1.5rem;
+}
+.settings-group h3 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+.settings-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.4rem 0;
+  gap: 1rem;
+}
+.settings-row label {
+  flex: 1;
+  font-size: 0.9rem;
+}
+.settings-row input[type="number"] {
+  width: 80px;
+  text-align: right;
+}
+
+/* === Weekly Summary === */
+.weekly-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.75rem;
+}
+.day-card {
+  text-align: center;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--pico-muted-border-color);
+}
+.day-card .day-name {
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+.day-card .day-time {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+/* === Utility === */
+.text-center { text-align: center; }
+.mt-1 { margin-top: 1rem; }
+.mb-1 { margin-bottom: 1rem; }
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* === GPA Display === */
+.gpa-display {
+  text-align: center;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+  opacity: 0.8;
+}
+.gpa-value {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+/* === Responsive === */
+@media (max-width: 600px) {
+  .screen-time-hero .time-value {
+    font-size: 2.5rem;
+  }
+  .grade-grid {
+    grid-template-columns: 1fr;
+  }
+  #app-nav a {
+    font-size: 0.8rem;
+    padding: 0.3rem 0.5rem;
+  }
+}
