@@ -1,7 +1,8 @@
 // admin.js — Parent/admin settings view
 
-import { getSettings, updateSettings, getScreenTimeLog, saveScreenTimeLog, exportData, importData, clearAllData, loadState } from '../store.js';
+import { getSettings, updateSettings, getScreenTimeLog, saveScreenTimeLog, exportData, importData, clearAllData, loadState, syncFromCloud } from '../store.js';
 import { showModal } from '../components/modal.js';
+import * as onedrive from '../onedrive.js';
 
 export function renderAdmin(container) {
   const settings = getSettings();
@@ -266,6 +267,163 @@ function renderAdminContent(container, settings, today) {
   dataGroup.appendChild(clearBtn);
 
   container.appendChild(dataGroup);
+
+  // === Cloud Sync (OneDrive) ===
+  renderCloudSyncSection(container, settings, today);
+}
+
+function renderCloudSyncSection(container, settings, today) {
+  const cloudGroup = createSettingsGroup('Cloud Sync (OneDrive)');
+  const config = onedrive.getCloudConfig();
+
+  // Client ID input
+  const clientIdRow = document.createElement('div');
+  clientIdRow.className = 'settings-row';
+
+  const clientIdLabel = document.createElement('label');
+  clientIdLabel.textContent = 'Azure App Client ID';
+  clientIdRow.appendChild(clientIdLabel);
+
+  const clientIdInput = document.createElement('input');
+  clientIdInput.type = 'text';
+  clientIdInput.value = config.clientId || '';
+  clientIdInput.placeholder = 'xxxxxxxx-xxxx-xxxx-...';
+  clientIdInput.style.width = '220px';
+  clientIdInput.style.fontFamily = 'monospace';
+  clientIdInput.style.fontSize = '0.8rem';
+  clientIdRow.appendChild(clientIdInput);
+
+  cloudGroup.appendChild(clientIdRow);
+
+  // Save client ID button
+  const saveIdBtn = document.createElement('button');
+  saveIdBtn.textContent = 'Save Client ID';
+  saveIdBtn.style.marginBottom = '0.75rem';
+  saveIdBtn.style.padding = '0.3rem 0.8rem';
+  saveIdBtn.style.fontSize = '0.85rem';
+  saveIdBtn.addEventListener('click', async () => {
+    const id = clientIdInput.value.trim();
+    onedrive.saveCloudConfig({ clientId: id || null });
+    if (id) {
+      saveIdBtn.textContent = 'Initializing...';
+      saveIdBtn.disabled = true;
+      await onedrive.initialize(id);
+    }
+    container.innerHTML = '';
+    renderAdminContent(container, settings, today);
+  });
+  cloudGroup.appendChild(saveIdBtn);
+
+  // Sign in/out + sync controls (only if client ID is configured)
+  if (config.clientId) {
+    if (onedrive.isSignedIn()) {
+      const info = onedrive.getAccountInfo();
+      const statusP = document.createElement('p');
+      statusP.style.fontSize = '0.85rem';
+      statusP.style.margin = '0.5rem 0';
+      statusP.textContent = `Signed in as ${info.name} (${info.email})`;
+      cloudGroup.appendChild(statusP);
+
+      const btnRow = document.createElement('div');
+      btnRow.style.display = 'flex';
+      btnRow.style.gap = '0.5rem';
+      btnRow.style.flexWrap = 'wrap';
+
+      const syncBtn = document.createElement('button');
+      syncBtn.textContent = 'Sync Now';
+      syncBtn.style.padding = '0.3rem 0.8rem';
+      syncBtn.style.fontSize = '0.85rem';
+      syncBtn.addEventListener('click', async () => {
+        syncBtn.textContent = 'Syncing...';
+        syncBtn.disabled = true;
+        const updated = await syncFromCloud();
+        if (updated) {
+          container.innerHTML = '';
+          renderAdmin(container);
+        } else {
+          syncBtn.textContent = 'Synced!';
+          setTimeout(() => {
+            syncBtn.textContent = 'Sync Now';
+            syncBtn.disabled = false;
+          }, 1500);
+        }
+      });
+      btnRow.appendChild(syncBtn);
+
+      const signOutBtn = document.createElement('button');
+      signOutBtn.textContent = 'Sign Out';
+      signOutBtn.className = 'secondary';
+      signOutBtn.style.padding = '0.3rem 0.8rem';
+      signOutBtn.style.fontSize = '0.85rem';
+      signOutBtn.addEventListener('click', async () => {
+        await onedrive.signOut();
+        container.innerHTML = '';
+        renderAdminContent(container, settings, today);
+      });
+      btnRow.appendChild(signOutBtn);
+
+      cloudGroup.appendChild(btnRow);
+    } else {
+      const signInBtn = document.createElement('button');
+      signInBtn.textContent = 'Sign in with Microsoft';
+      signInBtn.style.padding = '0.3rem 0.8rem';
+      signInBtn.style.fontSize = '0.85rem';
+      signInBtn.addEventListener('click', async () => {
+        signInBtn.textContent = 'Signing in...';
+        signInBtn.disabled = true;
+        const success = await onedrive.signIn();
+        if (success) {
+          const updated = await syncFromCloud();
+          container.innerHTML = '';
+          if (updated) {
+            renderAdmin(container);
+          } else {
+            renderAdminContent(container, settings, today);
+          }
+        } else {
+          signInBtn.textContent = 'Sign in with Microsoft';
+          signInBtn.disabled = false;
+        }
+      });
+      cloudGroup.appendChild(signInBtn);
+    }
+  }
+
+  // Setup instructions (collapsible)
+  const details = document.createElement('details');
+  details.style.marginTop = '0.75rem';
+  details.style.fontSize = '0.8rem';
+  details.style.opacity = '0.85';
+
+  const summary = document.createElement('summary');
+  summary.textContent = 'Setup instructions';
+  summary.style.cursor = 'pointer';
+  summary.style.fontWeight = '600';
+  details.appendChild(summary);
+
+  const guide = document.createElement('ol');
+  guide.style.paddingLeft = '1.2rem';
+  guide.style.marginTop = '0.5rem';
+  guide.style.lineHeight = '1.6';
+  guide.innerHTML = [
+    'Go to <a href="https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationsListBlade" target="_blank" rel="noopener">Azure App Registrations</a>',
+    'Click <strong>New registration</strong>',
+    'Name it (e.g. "Screen Time Tracker"), select <strong>Personal Microsoft accounts</strong> under supported account types',
+    'Under Redirect URI, select <strong>Single-page application (SPA)</strong> and enter your app\'s URL (e.g. <code>https://yourdomain.com/</code> or <code>http://localhost:8080/</code>)',
+    'Click <strong>Register</strong>, then copy the <strong>Application (client) ID</strong> and paste it above',
+    'Under <strong>API permissions</strong>, add <strong>Microsoft Graph &rarr; Files.ReadWrite</strong> (delegated)',
+    'Click <strong>Sign in with Microsoft</strong> above to connect',
+  ].map(s => `<li>${s}</li>`).join('');
+  details.appendChild(guide);
+
+  const note = document.createElement('p');
+  note.style.marginTop = '0.5rem';
+  note.style.fontStyle = 'italic';
+  note.textContent = 'Data syncs to OneDrive > Apps > ScreenTimeTracker > data.json';
+  details.appendChild(note);
+
+  cloudGroup.appendChild(details);
+  container.appendChild(cloudGroup);
 }
 
 function createSettingsGroup(title) {

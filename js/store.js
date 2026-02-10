@@ -1,6 +1,7 @@
-// store.js — localStorage data access layer
+// store.js — localStorage data access layer + OneDrive cloud sync
 
 import { createClassDefaults } from './models.js';
+import * as onedrive from './onedrive.js';
 
 const STORAGE_KEY = 'masonScreenTime';
 
@@ -54,6 +55,7 @@ export function saveState(newState) {
   if (newState) state = newState;
   state.lastUpdated = new Date().toISOString();
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  onedrive.scheduleSaveToCloud(state);
 }
 
 export function getState() {
@@ -187,4 +189,42 @@ export function importData(jsonString) {
 export function clearAllData() {
   localStorage.removeItem(STORAGE_KEY);
   state = null;
+}
+
+// --- Cloud sync ---
+
+export async function initCloudSync() {
+  const config = onedrive.getCloudConfig();
+  if (!config.clientId) return false;
+
+  const signedIn = await onedrive.initialize(config.clientId);
+  if (!signedIn) return false;
+
+  return syncFromCloud();
+}
+
+export async function syncFromCloud() {
+  if (!onedrive.isSignedIn()) return false;
+
+  const cloudData = await onedrive.loadFromCloud();
+  if (!cloudData) {
+    // No cloud file yet — push local data up
+    onedrive.saveToCloud(getState());
+    return false;
+  }
+
+  // Compare timestamps: use whichever is newer
+  const localTime = state?.lastUpdated || '';
+  const cloudTime = cloudData.lastUpdated || '';
+
+  if (cloudTime > localTime) {
+    // Cloud is newer — adopt it
+    state = cloudData;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    return true; // caller should re-render
+  }
+
+  // Local is newer or equal — push to cloud
+  onedrive.saveToCloud(getState());
+  return false;
 }
