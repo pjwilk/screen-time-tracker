@@ -321,6 +321,34 @@ dialog.app-modal h2 {
   font-size: 1.1rem;
 }
 
+/* === Sync Status Indicator === */
+.sync-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  padding: 0.15rem 0.6rem;
+  border-radius: 1rem;
+  font-weight: 500;
+  margin-top: 0.25rem;
+}
+.sync-status.status-synced {
+  background: #d4edda;
+  color: #155724;
+}
+.sync-status.status-syncing {
+  background: #cce5ff;
+  color: #004085;
+}
+.sync-status.status-error {
+  background: #f8d7da;
+  color: #721c24;
+}
+.sync-status.status-disconnected {
+  background: #e2e3e5;
+  color: #383d41;
+}
+
 /* === Responsive === */
 @media (max-width: 600px) {
   .screen-time-hero .time-value {

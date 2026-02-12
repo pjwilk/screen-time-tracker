@@ -1,6 +1,7 @@
-// store.js — localStorage data access layer
+// store.js — localStorage data access layer + OneDrive cloud sync
 
 import { createClassDefaults } from './models.js';
+import * as onedrive from './onedrive.js';
 
 const STORAGE_KEY = 'masonScreenTime';
 
@@ -12,13 +13,13 @@ function getDefaultState() {
     version: 1,
     lastUpdated: now,
     classes: [
-      { id: crypto.randomUUID(), name: 'Algebra 1 S2', type: 'core', currentGrade: 70.6, missingAssignments: 3, isActive: true, createdAt: now, updatedAt: now },
-      { id: crypto.randomUUID(), name: 'Art 2', type: 'core', currentGrade: 84.25, missingAssignments: 1, isActive: true, createdAt: now, updatedAt: now },
-      { id: crypto.randomUUID(), name: 'Biology 2', type: 'core', currentGrade: 61.23, missingAssignments: 4, isActive: true, createdAt: now, updatedAt: now },
+      { id: crypto.randomUUID(), name: 'Algebra 1 S2', type: 'core', currentGrade: 69.5, missingAssignments: 4, isActive: true, createdAt: now, updatedAt: now },
+      { id: crypto.randomUUID(), name: 'Art 2', type: 'core', currentGrade: 93.1, missingAssignments: 0, isActive: true, createdAt: now, updatedAt: now },
+      { id: crypto.randomUUID(), name: 'Biology 2', type: 'core', currentGrade: 56.4, missingAssignments: 4, isActive: true, createdAt: now, updatedAt: now },
       { id: crypto.randomUUID(), name: 'Concert Choir', type: 'core', currentGrade: 100, missingAssignments: 0, isActive: true, createdAt: now, updatedAt: now },
-      { id: crypto.randomUUID(), name: 'English 2', type: 'core', currentGrade: 84, missingAssignments: 2, isActive: true, createdAt: now, updatedAt: now },
-      { id: crypto.randomUUID(), name: 'Mil Sci I', type: 'core', currentGrade: 49.5, missingAssignments: 2, isActive: true, createdAt: now, updatedAt: now },
-      { id: crypto.randomUUID(), name: 'Freshman Seminar', type: 'elective', currentGrade: 0, missingAssignments: 0, isActive: false, createdAt: now, updatedAt: now },
+      { id: crypto.randomUUID(), name: 'English 2', type: 'core', currentGrade: 88, missingAssignments: 1, isActive: true, createdAt: now, updatedAt: now },
+      { id: crypto.randomUUID(), name: 'Mil Sci I', type: 'core', currentGrade: 61.9, missingAssignments: 0, isActive: true, createdAt: now, updatedAt: now },
+      { id: crypto.randomUUID(), name: 'Freshman Seminar', type: 'elective', currentGrade: 100, missingAssignments: 0, isActive: true, createdAt: now, updatedAt: now },
       { id: crypto.randomUUID(), name: 'Freshman Seminar (B)', type: 'elective', currentGrade: 0, missingAssignments: 0, isActive: false, createdAt: now, updatedAt: now },
     ],
     gradeHistory: [],
@@ -54,6 +55,7 @@ export function saveState(newState) {
   if (newState) state = newState;
   state.lastUpdated = new Date().toISOString();
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  onedrive.scheduleSaveToCloud(state);
 }
 
 export function getState() {
@@ -187,4 +189,42 @@ export function importData(jsonString) {
 export function clearAllData() {
   localStorage.removeItem(STORAGE_KEY);
   state = null;
+}
+
+// --- Cloud sync ---
+
+export async function initCloudSync() {
+  const config = onedrive.getCloudConfig();
+  if (!config.clientId) return false;
+
+  const signedIn = await onedrive.initialize(config.clientId);
+  if (!signedIn) return false;
+
+  return syncFromCloud();
+}
+
+export async function syncFromCloud() {
+  if (!onedrive.isSignedIn()) return false;
+
+  const cloudData = await onedrive.loadFromCloud();
+  if (!cloudData) {
+    // No cloud file yet — push local data up
+    onedrive.saveToCloud(getState());
+    return false;
+  }
+
+  // Compare timestamps: use whichever is newer
+  const localTime = state?.lastUpdated || '';
+  const cloudTime = cloudData.lastUpdated || '';
+
+  if (cloudTime > localTime) {
+    // Cloud is newer — adopt it
+    state = cloudData;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    return true; // caller should re-render
+  }
+
+  // Local is newer or equal — push to cloud
+  onedrive.saveToCloud(getState());
+  return false;
 }
