@@ -2,7 +2,7 @@
 
 ## The Deal
 
-You start with **3 hours (180 minutes)** of screen time every day. Your actual screen time depends on your grades and missing assignments. Right now you're at about **1 hour 35 minutes** — here's why, and how to get it back up.
+You start with **3 hours (180 minutes)** of screen time every day. Your actual screen time depends on your grades and missing assignments. Right now you're at about **1 hour 50 minutes** — here's why, and how to get it back up.
 
 ---
 
@@ -32,21 +32,25 @@ You start with **3 hours (180 minutes)** of screen time every day. Your actual s
 
 | Class | Grade | Missing | Impact |
 |-------|-------|---------|--------|
-| Algebra 1 S2 | C (70.6%) | 3 | -15 min |
-| Art 2 | B (84.25%) | 1 | -5 min |
-| Biology 2 | D (61.23%) | 4 | -20 min + -10 min (D penalty) |
+| Algebra 1 S2 | D (69.5%) | 4 | -20 min + -10 min (D penalty) |
+| Art 2 | A (93.1%) | 0 | +5 min (A bonus!) |
+| Biology 2 | F (56.4%) | 4 | -20 min + -20 min (F penalty) |
 | Concert Choir | A (100%) | 0 | +5 min (A bonus!) |
-| English 2 | B (84%) | 2 | -10 min |
-| Mil Sci I | F (49.5%) | 2 | -10 min + -20 min (F penalty) |
+| English 2 | B (88%) | 1 | -5 min |
+| Mil Sci I | D (61.9%) | 0 | -10 min (D penalty) |
+| Freshman Seminar | A (100%) | 0 | +5 min (A bonus!) |
 
 **Your math right now:**
 ```
   180  (baseline)
--  60  (12 missing assignments × 5)
--  10  (Biology D)
--  20  (Mil Sci F)
+-  45  (9 missing assignments × 5)
+-  10  (Algebra D)
+-  20  (Biology F)
+-  10  (Mil Sci D)
++   5  (Art A)
 +   5  (Concert Choir A)
-= 95 minutes (1h 35m)
++   5  (Freshman Seminar A)
+= 110 minutes (1h 50m)
 ```
 
 ---
@@ -56,31 +60,37 @@ You start with **3 hours (180 minutes)** of screen time every day. Your actual s
 Here's exactly what happens when you take action:
 
 ### Step 1: Turn in missing assignments
-Every assignment you turn in gives you **+5 minutes back**. Turn in all 12 and you get:
-- **+60 minutes** back from removing penalties
+Every assignment you turn in gives you **+5 minutes back**. Turn in all 9 and you get:
+- **+45 minutes** back from removing penalties
 - **+30 minute bonus** for having zero missing assignments
 - That alone gets you to **185 minutes — over 3 hours**
 
-### Step 2: Bring up Biology (D → C)
-Get Biology to 70% or above and you:
+### Step 2: Bring up Algebra (D → C)
+Get Algebra to 70% or above and you:
 - Remove the **-10 min D penalty**
 - Earn a **+10 min improvement bonus**
-- That's **+20 minutes**
+- That's **+20 minutes** — and you're only 0.5% away!
 
-### Step 3: Bring up Mil Sci (F → D, then D → C)
-Get Mil Sci to 60% or above (D) and you:
+### Step 3: Bring up Biology (F → D, then D → C)
+Get Biology to 60% or above (D) and you:
 - Reduce the penalty from **-20 min to -10 min**
 - Earn a **+10 min improvement bonus**
 
 Get it to 70%+ (C) and the penalty goes away completely with another improvement bonus.
+
+### Step 4: Bring up Mil Sci (D → C)
+Get Mil Sci to 70% or above and you:
+- Remove the **-10 min D penalty**
+- Earn a **+10 min improvement bonus**
+- That's **+20 minutes**
 
 ### The Dream Scenario
 All A's, zero missing assignments:
 ```
   180  (baseline)
 +  30  (zero missing bonus)
-+  30  (6 classes × 5 min A bonus)
-= 240 minutes (4 hours!)
++  35  (7 classes × 5 min A bonus)
+= 245 minutes (4 hours 5 min!)
 ```
 
 ---
@@ -106,11 +116,11 @@ Works on your phone, Chromebook, or any computer with a browser.
 | Action | Time You Get Back |
 |--------|-------------------|
 | Turn in 1 missing assignment | +5 min |
-| Turn in ALL missing assignments | +90 min (60 back + 30 bonus) |
+| Turn in ALL missing assignments | +75 min (45 back + 30 bonus) |
 | Raise a class by one letter grade | +10 min |
 | Get an A in any class | +5 min per class |
-| Keep Concert Choir at an A | Already earning you +5 min |
+| Keep Art, Choir & Seminar at an A | Already earning you +15 min |
 
-**The fastest way to more screen time:** turn in those missing assignments. Each one is worth 5 minutes, and clearing them all gets you a 30-minute bonus on top.
+**The fastest way to more screen time:** turn in those missing assignments. Each one is worth 5 minutes, and clearing all 9 gets you a 30-minute bonus on top. And Algebra is only 0.5% from a C — that's the easiest +20 minutes you'll ever get.
 
 Good luck. You got this.
